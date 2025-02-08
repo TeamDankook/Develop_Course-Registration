@@ -1,0 +1,33 @@
+.R-Page-Banner {
+  height: 41px;
+  width: 100%;
+  background-color: #5378cb;
+}
+
+.R-Page-nav {
+  height: 46px;
+  width: 100%;
+  line-height: 46px;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  .a {
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #383d4d;
+    display: flex;
+    flex: 2;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .b {
+    display: flex;
+    background-color: #656565;
+    gap: 15px;
+    flex: 8;
+    align-items: center;
+    justify-content: center;
+  }
+}
