@@ -1,0 +1,87 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+const Courses = () => {
+    const [courses, setCourses] = useState([]);
+    const [newCourse, setNewCourse] = useState({
+        course_id: '',
+        campus: '',
+        division: '',
+        name: '',
+        credits: '',
+        professor: '',
+        schedule: '',
+        max_capacity: '',
+    });
+
+    // 📌 과목 목록 가져오기
+    useEffect(() => {
+        axios.get('http://localhost:5000/api/courses')
+            .then(response => setCourses(response.data))
+            .catch(error => console.error('데이터 불러오기 실패:', error));
+    }, []);
+
+    // 📌 입력값 변경 핸들러
+    const handleChange = (e) => {
+        setNewCourse({ ...newCourse, [e.target.name]: e.target.value });
+    };
+
+    // 📌 과목 추가 요청
+    const addCourse = (e) => {
+        e.preventDefault();
+        axios.post('http://localhost:5000/api/courses', newCourse)
+            .then(response => {
+                alert('강의 추가 성공!');
+                setCourses([...courses, newCourse]); // UI 업데이트
+            })
+            .catch(error => console.error('강의 추가 실패:', error));
+    };
+
+    return (
+        <div>
+            <h2>강의 목록</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>과목 ID</th>
+                        <th>캠퍼스</th>
+                        <th>분반</th>
+                        <th>이름</th>
+                        <th>학점</th>
+                        <th>교수</th>
+                        <th>일정</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {courses.map((course, index) => (
+                        <tr key={index}>
+                            <td>{course.course_id}</td>
+                            <td>{course.campus}</td>
+                            <td>{course.division}</td>
+                            <td>{course.name}</td>
+                            <td>{course.credits}</td>
+                            <td>{course.professor}</td>
+                            <td>{course.schedule}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+
+            <h2>새 강의 추가</h2>
+            <form onSubmit={addCourse}>
+                <input name="course_id" placeholder="과목 ID" onChange={handleChange} />
+                <input name="campus" placeholder="캠퍼스" onChange={handleChange} />
+                <input name="division" placeholder="분반" onChange={handleChange} />
+                <input name="name" placeholder="강의명" onChange={handleChange} />
+                <input name="credits" placeholder="학점" onChange={handleChange} />
+                <input name="professor" placeholder="교수명" onChange={handleChange} />
+                <input name="schedule" placeholder="일정" onChange={handleChange} />
+                <input name="max_capacity" placeholder="정원" onChange={handleChange} />
+                <button type="submit">강의 추가</button>
+            </form>
+        </div>
+    );
+};
+
+export default Courses;
+
